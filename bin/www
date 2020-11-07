@@ -6,7 +6,7 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('local-library-tutorial:server');
+var debug = require('debug')('youtube-downloader:server');
 var http = require('http');
 
 /**
