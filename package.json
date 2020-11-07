@@ -4,7 +4,7 @@
   "description": "Node.js example server starter project",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node ./bin/www",
     "devstart": "nodemon src/index.js"
   },
   "dependencies": {
