@@ -8,7 +8,8 @@ require('dotenv').config()
 
 app.use(express.urlencoded({ extended: true }));
 
-app.set('port', process.env.PORT || 3000)
+const PORT = process.env.PORT || 3000
+app.set('port', PORT)
 
 //create a server object:
 app.get('/', (req, res, next) => {
@@ -52,6 +53,4 @@ app.post('/', async (req, res, next) => {
 		}
 	});
 	
-	app.listen(app.get('port'), function () {
-		debug('Express server listening on port ' + server.address().port)
-	})
+	app.listen(PORT, console.log('Server running on port ' + PORT))

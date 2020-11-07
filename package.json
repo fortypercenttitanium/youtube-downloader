@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Youtube downloader app",
   "scripts": {
-    "start": "node ./bin/www",
-    "devstart": "nodemon src/index.js"
+    "start": "node src/app",
+    "devstart": "nodemon src/app"
   },
   "engines": {
     "node": "13.10.1"
