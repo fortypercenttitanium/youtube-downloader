@@ -8,8 +8,7 @@ require("dotenv").config();
 
 app.use(express.urlencoded({ extended: true }));
 
-const PORT = process.env.PORT || 3000;
-app.set("port", PORT);
+app.set("port", process.env.PORT || 3000);
 
 //create a server object:
 app.get("/", (req, res, next) => {
