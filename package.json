@@ -1,11 +1,13 @@
 {
-  "name": "node-http-server",
+  "name": "youtube-downloader",
   "version": "1.0.0",
-  "description": "Node.js example server starter project",
-  "main": "src/index.js",
+  "description": "Youtube downloader app",
   "scripts": {
     "start": "node ./bin/www",
     "devstart": "nodemon src/index.js"
+  },
+  "engines": {
+    "node": "13.10.1"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
