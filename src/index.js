@@ -4,8 +4,7 @@ const path = require('path');
 const express = require('express');
 const app = express();
 const ffmpeg = require('fluent-ffmpeg')
-
-ffmpeg.setFfmpegPath(path.join(__dirname, '/src'))
+require('dotenv').config()
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -38,22 +37,11 @@ app.post('/', async (req, res, next) => {
 					'Content-disposition': `attachment;filename=${info.videoDetails.media.artist} - ${info.videoDetails.media.song}.mp3`,
 					'Content-type': 'audio/mp3',
 				});
-				const command = ffmpeg(file)
+				const command = ffmpeg(file).format('mp3').audioCodec('libmp3lame').withNoVideo().on('error', (err) => {
+					console.error(err)
+					res.end('ended with an error')
+				})
 				command.pipe(res)
-				res.end()
-				// file.pipe(writeStream)
-				// writeStream.on('finish', () => {
-				// 	const command = ffmpeg({
-				// 		source: writeStream
-				// 	})
-				// 		.on('end', () => {
-				// 			console.log('finished')
-				// 			command.pipe(writeStream)
-				// 		})
-				// 		.on('error', (err) => {
-				// 			console.error(err)
-				// 		})
-				// })
 			} catch (err) {
 				console.error(err);
 			}
