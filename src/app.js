@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.set("port", process.env.PORT || 3000);
 
-//create a server object:
+// create a server object:
 app.get("/", (req, res, next) => {
 	res.sendFile(path.join(__dirname, "index.html"));
 });
