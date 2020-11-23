@@ -1,10 +1,15 @@
+require("dotenv").config();
 const fs = require("fs");
 const ytdl = require("ytdl-core");
 const path = require("path");
 const express = require("express");
 const app = express();
-const ffmpeg = require("fluent-ffmpeg");
-require("dotenv").config();
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+const ffmpeg = require('fluent-ffmpeg');
+
+if(process.env.NODE_ENV === 'dev') {
+	ffmpeg.setFfmpegPath(ffmpegPath);
+}
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -24,21 +29,20 @@ app.post("/", async (req, res, next) => {
 	if (ytdl.validateURL(url)) {
 		try {
 			const info = await ytdl.getBasicInfo(ytdl.getVideoID(url));
-
 			const file = await ytdl(url, {
 				filter: (format) => {
 					return (
 						format.hasAudio &&
-						!format.hasVideo &&
+						!format.hasVideo 
+						&&
 						format.audioQuality === "AUDIO_QUALITY_MEDIUM"
 					);
 				},
 			});
-			const writeStream = fs.createWriteStream("audio.mp3");
-			res.set({
-				"Content-disposition": `attachment;filename=${info.videoDetails.media.artist} - ${info.videoDetails.media.song}.mp3`,
-				"Content-type": "audio/mp3",
-			});
+			 res.set({
+			 	"Content-disposition": `attachment;filename=${info.videoDetails.media.artist.replace(/,/g, '')} - ${info.videoDetails.media.song.replace(/,/g, '')}.mp3`,
+			 	"Content-type": "audio/mp3",
+			 });
 			const command = ffmpeg(file)
 				.format("mp3")
 				.audioCodec("libmp3lame")
@@ -46,8 +50,9 @@ app.post("/", async (req, res, next) => {
 				.on("error", (err) => {
 					console.error(err);
 					res.end("ended with an error");
-				});
-			command.pipe(res);
+				})
+			command.pipe(res, {end: true});
+			
 		} catch (err) {
 			console.error(err);
 		}
