@@ -29,6 +29,7 @@ app.post("/", async (req, res, next) => {
 	if (ytdl.validateURL(url)) {
 		try {
 			const info = await ytdl.getBasicInfo(ytdl.getVideoID(url));
+			const filename = info.videoDetails.media.artist ? `${info.videoDetails.media.artist.replace(/,/g, '')} - ${info.videoDetails.media.song.replace(/,/g, '')}.mp3` : `${info.videoDetails.title.replace(/,/g, '')}.mp3`;
 			const file = await ytdl(url, {
 				filter: (format) => {
 					return (
@@ -40,7 +41,7 @@ app.post("/", async (req, res, next) => {
 				},
 			});
 			 res.set({
-			 	"Content-disposition": `attachment;filename=${info.videoDetails.media.artist.replace(/,/g, '')} - ${info.videoDetails.media.song.replace(/,/g, '')}.mp3`,
+			 	"Content-disposition": `attachment;filename=${filename}`,
 			 	"Content-type": "audio/mp3",
 			 });
 			const command = ffmpeg(file)
