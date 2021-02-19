@@ -124,10 +124,10 @@ function App() {
 				ref={hiddenForm}
 				className='hidden-form'
 				action='/file-download'
-				onChange={() => {}}
+				readOnly
 				method='POST'
 			>
-				<input name='url' value={urlBox} />
+				<input readOnly name='url' value={urlBox} />
 			</form>
 		</div>
 	);
