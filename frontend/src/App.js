@@ -16,8 +16,8 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: 'center',
 		margin: 'auto',
 	},
-	headerText: { margin: 'auto 1rem' },
-	headerImg: { height: '10rem', margin: 'auto 0 auto 2.5rem' },
+	headerText: { margin: 'auto 0 2.5rem' },
+	headerImg: { height: '10rem', margin: 'auto 0' },
 	paper: {
 		display: 'flex',
 		flexDirection: 'column',
@@ -84,9 +84,8 @@ function App() {
 	return (
 		<div className='App'>
 			<header className={classes.header}>
-				<h1 className={classes.headerText}>Youtube</h1>
 				<img className={classes.headerImg} src={knightLogo} alt='knight logo' />
-				<h1 className={classes.headerText}>Downloader</h1>
+				<h1 className={classes.headerText}>Youtube Downloader</h1>
 			</header>
 
 			<form className='form' onSubmit={handleSubmit}>
