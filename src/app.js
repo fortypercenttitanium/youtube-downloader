@@ -6,6 +6,7 @@ const express = require('express');
 const app = express();
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ffmpeg = require('fluent-ffmpeg');
+const contentDisposition = require('content-disposition');
 
 if (process.env.NODE_ENV === 'dev') {
 	ffmpeg.setFfmpegPath(ffmpegPath);
@@ -34,8 +35,9 @@ app.post('/', async (req, res, next) => {
 						/,/g,
 						''
 				  )} - ${info.videoDetails.media.song.replace(/,/g, '')}.mp3`
-				: `${info.videoDetails.title.replace(/,/g, '')}.mp3`;
-			console.log(filename);
+				: info.videoDetals.title
+				? `${info.videoDetails.title.replace(/,/g, '')}.mp3`
+				: 'youtube download';
 			const file = await ytdl(url, {
 				filter: (format) => {
 					return (
@@ -46,7 +48,7 @@ app.post('/', async (req, res, next) => {
 				},
 			});
 			res.set({
-				'Content-disposition': `attachment;filename=${filename}`,
+				'Content-disposition': contentDisposition(filename),
 				'Content-type': 'audio/mp3',
 			});
 			const command = ffmpeg(file)
