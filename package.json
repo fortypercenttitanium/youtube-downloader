@@ -1,24 +1,26 @@
 {
-  "name": "youtube-downloader",
-  "version": "1.0.0",
-  "description": "Youtube downloader app",
-  "scripts": {
-    "start": "node src/app",
-    "devstart": "nodemon src/app"
-  },
-  "engines": {
-    "node": "13.10.1"
-  },
-  "dependencies": {
-    "@ffmpeg-installer/ffmpeg": "^1.0.20",
-    "content-disposition": "^0.5.3",
-    "dotenv": "^8.2.0",
-    "express": "4.17.1",
-    "youtube-mp3-downloader": "^0.7.6",
-    "ytdl-core": "^4.1.2"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.6"
-  },
-  "keywords": []
+	"name": "youtube-downloader",
+	"version": "1.0.0",
+	"description": "Youtube downloader app",
+	"scripts": {
+		"start": "cd frontend && npm run build && cd .. && node backend/app",
+		"devstart": "cd frontend && npm run build && cd .. && nodemon backend/app",
+		"dev:frontend": "cd frontend && npm start",
+		"dev:backend": "nodemon backend/app"
+	},
+	"engines": {
+		"node": "13.10.1"
+	},
+	"dependencies": {
+		"@ffmpeg-installer/ffmpeg": "^1.0.20",
+		"content-disposition": "^0.5.3",
+		"dotenv": "^8.2.0",
+		"express": "4.17.1",
+		"youtube-mp3-downloader": "^0.7.6",
+		"ytdl-core": "^4.1.2"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.6"
+	},
+	"keywords": []
 }

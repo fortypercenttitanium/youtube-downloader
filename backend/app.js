@@ -1,5 +1,4 @@
 require('dotenv').config();
-const fs = require('fs');
 const ytdl = require('ytdl-core');
 const path = require('path');
 const express = require('express');
@@ -14,12 +13,11 @@ if (process.env.NODE_ENV === 'dev') {
 
 app.use(express.urlencoded({ extended: true }));
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 4000);
 
 // create a server object:
-app.get('/', (req, res, next) => {
-	res.sendFile(path.join(__dirname, 'index.html'));
-});
+app.use(express.static(path.join(__dirname, '..', 'frontend', 'build')));
+app.use(express.static(path.join(__dirname, '..', 'frontend', 'public')));
 
 app.get('/style.css', (req, res, next) => {
 	res.sendFile(path.join(__dirname, 'style.css'));
@@ -30,13 +28,30 @@ app.post('/', async (req, res, next) => {
 	if (ytdl.validateURL(url)) {
 		try {
 			const info = await ytdl.getBasicInfo(ytdl.getVideoID(url));
+			res.status(200).send('OK');
+		} catch (err) {
+			res.statusMessage = err.message;
+			res.status(500).send(err);
+		}
+	} else {
+		res.statusMessage = 'Invalid URL';
+		res.status(400).send('Invalid URL');
+	}
+});
+
+app.post('/file-download', async (req, res, next) => {
+	const { url } = req.body;
+	console.log(url);
+	if (ytdl.validateURL(url)) {
+		try {
+			const info = await ytdl.getBasicInfo(ytdl.getVideoID(url));
 			const filename = info.videoDetails.media.artist
 				? `${info.videoDetails.media.artist.replace(
 						/,/g,
 						''
-				  )} - ${info.videoDetails.media.song.replace(/,/g, '')}.mp3`
+				  )} - ${info.videoDetails.media.song.replace(/[,\/]/g, '')}.mp3`
 				: info.videoDetals.title
-				? `${info.videoDetails.title.replace(/,/g, '')}.mp3`
+				? `${info.videoDetails.title.replace(/[,\/]/g, '')}.mp3`
 				: 'youtube download';
 			const file = await ytdl(url, {
 				filter: (format) => {
@@ -47,9 +62,11 @@ app.post('/', async (req, res, next) => {
 					);
 				},
 			});
+			console.log('filename', filename);
+			console.log('filename cd', contentDisposition(filename));
 			res.set({
-				'Content-disposition': contentDisposition(filename),
-				'Content-type': 'audio/mp3',
+				'Content-Disposition': contentDisposition(filename),
+				'Content-Type': 'audio/mp3',
 			});
 			const command = ffmpeg(file)
 				.format('mp3')
@@ -61,10 +78,12 @@ app.post('/', async (req, res, next) => {
 				});
 			command.pipe(res, { end: true });
 		} catch (err) {
-			console.error(err);
+			res.statusMessage = err.message;
+			res.status(500).send(err);
 		}
 	} else {
-		console.error('Invalid URL');
+		res.statusMessage = 'Invalid URL';
+		res.status(400).send('Invalid URL');
 	}
 });
 
