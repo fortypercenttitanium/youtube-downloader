@@ -3,7 +3,8 @@
 	"version": "1.0.0",
 	"description": "Youtube downloader app",
 	"scripts": {
-		"start": "cd frontend && npm run build && cd .. && node backend/app",
+		"start": "node backend/app",
+		"build": "cd frontend/ && npm install && npm run build",
 		"devstart": "cd frontend && npm run build && cd .. && nodemon backend/app",
 		"dev:frontend": "cd frontend && npm start",
 		"dev:backend": "nodemon backend/app"
