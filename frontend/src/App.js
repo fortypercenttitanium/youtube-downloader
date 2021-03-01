@@ -40,7 +40,23 @@ function App() {
 		setUrlBox(e.target.value);
 	};
 
-	async function checkUrl() {
+	const checkUrl = () => {
+		if (urlBox.match(/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/)) {
+			setErrors([]);
+			setIsButtonDisabled(false);
+		} else {
+			setErrors(['Invalid url']);
+			setIsButtonDisabled(true);
+		}
+	};
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+	};
+
+	const hiddenForm = useRef();
+
+	const handleClick = async () => {
 		if (urlBox) {
 			setErrors([]);
 			const myHeaders = new Headers();
@@ -62,23 +78,13 @@ function App() {
 					setErrors([`${result.status} - ${result.statusText}`]);
 					setIsButtonDisabled(true);
 				} else {
-					setIsButtonDisabled(false);
+					hiddenForm.current.submit();
+					setUrlBox('');
 				}
 			} catch (err) {
 				setErrors([err.message]);
 			}
 		}
-	}
-
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-	};
-
-	const hiddenForm = useRef();
-
-	const handleClick = () => {
-		hiddenForm.current.submit();
-		setUrlBox('');
 	};
 
 	return (
