@@ -41,7 +41,6 @@ app.post('/', async (req, res, next) => {
 
 app.post('/file-download', async (req, res, next) => {
 	const { url } = req.body;
-	console.log(url);
 	if (ytdl.validateURL(url)) {
 		try {
 			const info = await ytdl.getBasicInfo(ytdl.getVideoID(url));
@@ -50,7 +49,7 @@ app.post('/file-download', async (req, res, next) => {
 						/,/g,
 						''
 				  )} - ${info.videoDetails.media.song.replace(/[,\/]/g, '')}.mp3`
-				: info.videoDetals.title
+				: info.videoDetails.title
 				? `${info.videoDetails.title.replace(/[,\/]/g, '')}.mp3`
 				: 'youtube download';
 			const file = await ytdl(url, {
