@@ -69,12 +69,16 @@ function App() {
 	};
 
 	const checkUrl = () => {
-		if (urlBox.match(/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/)) {
-			setErrors([]);
-			setIsButtonDisabled(false);
-		} else {
-			setErrors(['Invalid url']);
-			setIsButtonDisabled(true);
+		if (urlBox) {
+			if (
+				urlBox.match(/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/)
+			) {
+				setErrors([]);
+				setIsButtonDisabled(false);
+			} else {
+				setErrors(['Invalid url']);
+				setIsButtonDisabled(true);
+			}
 		}
 	};
 
