@@ -1,10 +1,22 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useState, useRef } from 'react';
+import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import './App.css';
 import knightLogo from './knight_logo.png';
+
+const theme = createMuiTheme({
+	breakpoints: {
+		values: {
+			xs: 0,
+			sm: 600,
+			md: 720,
+			lg: 1280,
+			xl: 1920,
+		},
+	},
+});
 
 const useStyles = makeStyles((theme) => ({
 	textField: {
@@ -22,15 +34,31 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center',
-		padding: '3rem',
+		padding: '3rem 2rem 1rem',
+		marginTop: '2rem',
 	},
 	button: {
 		margin: '2rem auto',
 	},
+	[theme.breakpoints.down('sm')]: {
+		textField: {
+			width: '45ch',
+		},
+	},
+	[theme.breakpoints.down('xs')]: {
+		paper: {
+			padding: '3rem 0 0',
+		},
+		textField: {
+			width: '15rem',
+		},
+		headerText: { margin: 'auto 0 2rem', fontSize: '1.2rem' },
+		headerImg: { height: '6rem', margin: 'auto 0' },
+	},
 }));
 
 function App() {
-	const classes = useStyles();
+	const classes = useStyles(theme);
 
 	const [urlBox, setUrlBox] = useState('');
 	const [errors, setErrors] = useState([]);
