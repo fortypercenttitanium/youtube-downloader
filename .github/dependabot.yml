@@ -9,3 +9,7 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "direct"
+      - dependency-name: "ytdl-core"
+      - dependency-name: "youtube-mp3-downloader"
